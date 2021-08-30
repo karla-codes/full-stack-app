@@ -1,13 +1,14 @@
 import './App.css';
 import React from 'react';
 // import { Router, Route, Switch } from 'react-router';
-import Courses from './components/Courses';
+// import Courses from './components/Courses';
+import CourseDetail from './components/CourseDetail';
 
 // main container Component
 function App() {
   // set up routes
 
-  return <Courses />;
+  return <CourseDetail />;
   // const [data, setData] = useState('');
   // useEffect(() => {
   //   fetch('http://localhost:5000/api/courses')
