@@ -20,7 +20,10 @@ function Courses() {
       {/* for each course, return anchor tag with course info */}
       {courses.map(course => {
         return (
-          <a className="course--module course--link" href="course detail">
+          <a
+            className="course--module course--link"
+            href={'/courses/' + course.id}
+          >
             <h2 className="course--label">{course.title}</h2>
             <h3 className="course--title">{course.description}</h3>
           </a>
