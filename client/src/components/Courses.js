@@ -1,37 +1,53 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { Link } from 'react-router-dom';
+// import axios from 'axios';
 
-function Courses() {
-  const [courses, setCourses] = useState('');
+function Courses(props) {
+  const [courses, setCourses] = useState([]);
+  const { context } = props;
 
   useEffect(() => {
-    axios
-      .get('http://localhost:5000/api/courses')
-      .then(res => {
-        setCourses(res.data.courses);
-        console.log(courses);
-      })
-      .catch(err => console.log('Error fetching data', err));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    context.data
+      .getCourses()
+      .then(data => setCourses(data))
+      .catch(err => {
+        console.log(err);
+        // push history to an error page
+        // this.props.history.push('/error')
+      });
+
+    console.log(courses);
   }, []);
+
+  const coursesArr = courses.map(course => {
+    return (
+      <Link
+        to={`/courses/${course.id}`}
+        className="course--module course--link"
+      >
+        <h2 className="course--label">{course.title}</h2>
+        <h3 className="course--title">{course.description}</h3>
+      </Link>
+    );
+  });
 
   return (
     <div className="wrap main--grid">
       {/* for each course, return anchor tag with course info */}
-      {courses.map(course => {
-        return (
-          <a
-            className="course--module course--link"
-            href={'/courses/' + course.id}
-          >
-            <h2 className="course--label">{course.title}</h2>
-            <h3 className="course--title">{course.description}</h3>
-          </a>
-        );
-      })}
+
+      {/* {courses.map(course => (
+        <Link
+          to={`/courses/${course.id}`}
+          className="course--module course--link"
+        >
+          <h2 className="course--label">{course.title}</h2>
+          <h3 className="course--title">{course.description}</h3>
+        </Link>
+      ))} */}
+      {coursesArr}
 
       {/* Link to add new course */}
-      <a className="course--module course--add--module" href="create-course">
+      <Link to="/courses/create" className="course--module course--add--module">
         <span className="course--add--title">
           <svg
             version="1.1"
@@ -45,7 +61,7 @@ function Courses() {
           </svg>
           New Course
         </span>
-      </a>
+      </Link>
     </div>
   );
 }
