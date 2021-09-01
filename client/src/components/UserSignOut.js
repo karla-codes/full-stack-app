@@ -5,3 +5,5 @@ function UserSignOut() {
   // wrap in Context
   return <Redirect to="/courses" />;
 }
+
+export default UserSignOut;

@@ -8,7 +8,7 @@ function Header() {
     <header>
       <div className="wrap header--flex">
         <h1 className="header--logo">
-          <Link to="/courses">Courses</Link>
+          <Link to="/">Courses</Link>
         </h1>
         <nav>
           {/* If authenticatedUser === false */}
@@ -30,3 +30,5 @@ function Header() {
     </header>
   );
 }
+
+export default Header;

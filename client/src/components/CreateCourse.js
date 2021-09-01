@@ -58,3 +58,5 @@ function CreateCourse() {
     </main>
   );
 }
+
+export default CreateCourse;
