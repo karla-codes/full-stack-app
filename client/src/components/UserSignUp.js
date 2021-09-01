@@ -122,7 +122,7 @@ function UserSignUp() {
           });
         }
       })
-      .cathc(err => {
+      .catch(err => {
         console.log(err);
         this.props.history.push('/error');
       });
