@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 // import { Link } from 'react-router-dom';
 import Form from './Form';
 
-function UserSignUp() {
+function UserSignUp(props) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
+  const [emailAddress, setEmailAddress] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState([]);
 
@@ -14,7 +14,9 @@ function UserSignUp() {
   return (
     <Form
       submit={submit}
+      cancel={cancel}
       errors={errors}
+      submitButtonText="Sign Up"
       elements={() => (
         <React.Fragment>
           <label htmlFor="firstName">First Name</label>
@@ -22,7 +24,7 @@ function UserSignUp() {
             id="firstName"
             name="firstName"
             type="text"
-            value=""
+            value={firstName}
             onChange={change}
           ></input>
           <label htmlFor="lastName">Last Name</label>
@@ -30,7 +32,7 @@ function UserSignUp() {
             id="lastName"
             name="lastName"
             type="text"
-            value=""
+            value={lastName}
             onChange={change}
           ></input>
           <label htmlFor="emailAddress">Email Address</label>
@@ -38,7 +40,7 @@ function UserSignUp() {
             id="emailAddress"
             name="emailAddress"
             type="email"
-            value=""
+            value={emailAddress}
             onChange={change}
           ></input>
           <label htmlFor="password">Password</label>
@@ -46,7 +48,7 @@ function UserSignUp() {
             id="password"
             name="password"
             type="password"
-            value=""
+            value={password}
             onChange={change}
           ></input>
         </React.Fragment>
@@ -92,7 +94,7 @@ function UserSignUp() {
     } else if (name === 'lastName') {
       return setLastName(value);
     } else if (name === 'emailAddress') {
-      return setEmail(value);
+      return setEmailAddress(value);
     } else if (name === 'password') {
       return setPassword(value);
     }
@@ -100,11 +102,12 @@ function UserSignUp() {
 
   // - submit
   function submit() {
-    const { context } = this.props;
+    const { context } = props;
+
     const user = {
       firstName,
       lastName,
-      email,
+      emailAddress,
       password,
     };
 
@@ -112,20 +115,25 @@ function UserSignUp() {
       .createUser(user)
       .then(errors => {
         if (errors.length) {
-          setErrors({ errors });
+          setErrors(errors);
         } else {
-          context.actions.signIn(email, password).then(() => {
-            this.props.history.push('/authenticated');
-            console.log(
-              `${firstName} is successfully signed up and authenticated!`
-            );
-          });
+          // Once user is registered successfully, log them in and send to welcome page
+          // context.actions.signIn(emailAddress, password).then(() => {
+          //   props.history.push('/authenticated')
+          // })
+          console.log('User was successfully signed up!');
         }
       })
       .catch(err => {
         console.log(err);
-        this.props.history.push('/error');
+        // render NotFound Component
+        // props.history.push('/error')
       });
+  }
+
+  // - Cancel
+  function cancel() {
+    props.history.push('/');
   }
 }
 
