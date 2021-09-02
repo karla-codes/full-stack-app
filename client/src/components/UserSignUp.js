@@ -118,9 +118,9 @@ function UserSignUp(props) {
           setErrors(errors);
         } else {
           // Once user is registered successfully, log them in and send to welcome page
-          // context.actions.signIn(emailAddress, password).then(() => {
-          //   props.history.push('/authenticated')
-          // })
+          context.actions.signIn(emailAddress, password).then(() => {
+            props.history.push('/');
+          });
           console.log('User was successfully signed up!');
         }
       })
