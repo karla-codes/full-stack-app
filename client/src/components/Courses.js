@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+// import axios from 'axios';
 
 function Courses(props) {
   const [courses, setCourses] = useState([]);
@@ -14,7 +15,8 @@ function Courses(props) {
         // push history to an error page
         // this.props.history.push('/error')
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    console.log(courses);
   }, []);
 
   const coursesArr = courses.map(course => {
@@ -33,6 +35,15 @@ function Courses(props) {
     <div className="wrap main--grid">
       {/* for each course, return anchor tag with course info */}
 
+      {/* {courses.map(course => (
+        <Link
+          to={`/courses/${course.id}`}
+          className="course--module course--link"
+        >
+          <h2 className="course--label">{course.title}</h2>
+          <h3 className="course--title">{course.description}</h3>
+        </Link>
+      ))} */}
       {coursesArr}
 
       {/* Link to add new course */}
