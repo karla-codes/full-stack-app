@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Cookies from 'js-cookie';
 import Data from '../Data';
 
 const Context = React.createContext();
@@ -7,8 +8,15 @@ export class Provider extends Component {
   constructor() {
     super();
     this.data = new Data();
-    this.state = { authenticatedUser: null };
+    this.cookie = Cookies.get('authenticatedUser');
+    this.state = {
+      authenticatedUser: this.cookie ? JSON.parse(this.cookie) : null,
+    };
   }
+
+  state = {
+    authenticatedUser: null,
+  };
 
   render() {
     const { authenticatedUser } = this.state;
@@ -30,9 +38,23 @@ export class Provider extends Component {
 
   // items to add to Context
   // - Sign In (authenticate)
-  signIn = async (username, password) => {};
+  signIn = async (username, password) => {
+    const user = await this.data.getUser(username, password);
+    if (user !== null) {
+      this.setState(() => {
+        return {
+          authenticatedUser: user,
+        };
+      });
+      Cookies.set('authenticatedUser', JSON.stringify(user), { expire: 1 });
+    }
+    return user;
+  };
   // - Sign Out
-  signOut = async () => {};
+  signOut = async () => {
+    this.setState({ authenticatedUser: null });
+    Cookies.remove('authenticatedUser');
+  };
 }
 
 export const Consumer = Context.Consumer;
