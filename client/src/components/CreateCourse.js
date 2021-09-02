@@ -1,24 +1,24 @@
 import React, { useState } from 'react';
+import Form from './Form';
 
-function CreateCourse() {
+function CreateCourse(props) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [estimatedTime, setEstimatedTime] = useState('');
   const [materialsNeeded, setMaterialsNeeded] = useState('');
+  const [errors, setErrors] = useState([]);
 
-  {
-    /* Needs to be wrapped in Context */
-  }
+  const { context } = props;
+  const authUser = context.authenticatedUser;
 
   return (
-    <main>
-      <div className="wrap">
-        <h2>Create Course</h2>
-        {/* Only display if errors === true */}
-        <div className="validation--errors">
-          <ul>{/* Validation errors go here */}</ul>
-        </div>
-        <form>
+    <Form
+      submit={submit}
+      cancel={cancel}
+      errors={errors}
+      submitButtonText="Create Course"
+      elements={() => (
+        <React.Fragment>
           <div className="main--flex">
             <div>
               <label htmlFor="courseTitle">Course Title</label>
@@ -28,7 +28,9 @@ function CreateCourse() {
                 type="text"
                 value=""
               ></input>
-              <p>By {/*enter author name */}</p>
+              <p>
+                By {authUser.firstName} {authUser.lastName}
+              </p>
               <label htmlFor="courseDescription">Course description</label>
               <textarea
                 id="courseDescription"
@@ -47,16 +49,14 @@ function CreateCourse() {
               <textarea id="materialsNeeded" name="materialsNeeded"></textarea>
             </div>
           </div>
-          <button className="button" type="submit">
-            Create Course
-          </button>
-          <button className="button button-secondary" onClick="">
-            Cancel
-          </button>
-        </form>
-      </div>
-    </main>
+        </React.Fragment>
+      )}
+    />
   );
+
+  function submit() {}
+
+  function cancel() {}
 }
 
 export default CreateCourse;
