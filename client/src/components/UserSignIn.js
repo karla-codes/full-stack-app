@@ -1,45 +1,76 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import Form from './Form';
+// import { Link } from 'react-router-dom';
 
-function UserSignIn() {
+function UserSignIn(props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState([]);
 
   // need to add authentication when signing in
 
-  const cancel = e => {
-    e.preventDefault();
-    this.props.history.push('/courses');
-  };
-
   return (
-    <main>
-      <div className="form--centered">
-        <h2>Sign In</h2>
-        <form>
+    <Form
+      submit={submit}
+      cancel={cancel}
+      errors={errors}
+      submitButtonText="Sign In"
+      elements={() => (
+        <React.Fragment>
           <label htmlFor="emailAddress">Email Address</label>
           <input
             id="emailAddress"
             name="emailAddress"
             type="email"
-            value=""
+            onChange={change}
+            value={username}
           ></input>
           <label htmlFor="password">Password</label>
-          <input id="password" name="password" type="password" value=""></input>
-          <button className="button" type="submit">
-            Sign In
-          </button>
-          <button className="button button-secondary" onClick={cancel}>
-            Cancel
-          </button>
-        </form>
-        <p>
-          Don't have a user account? Click here to
-          <Link to="/signup">sign up</Link>!
-        </p>
-      </div>
-    </main>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            onChange={change}
+            value={password}
+          ></input>
+        </React.Fragment>
+      )}
+    />
   );
+
+  function change(e) {
+    const name = e.target.name;
+    const value = e.target.value;
+
+    if (name === 'emailAddress') {
+      return setUsername(value);
+    } else if (name === 'password') {
+      return setPassword(value);
+    }
+  }
+
+  function submit() {
+    const { context } = props;
+    // const { from } = props.location.state || { from: { pathname: '/' } };
+    context.actions
+      .signIn(username, password)
+      .then(user => {
+        if (user === null) {
+          return setErrors({ errors: ['Sign in was unsuccessful'] });
+        } else {
+          props.history.push('/');
+          console.log(`${username} was signed in successfully!`);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        // props.history.push('/error')
+      });
+  }
+
+  function cancel() {
+    props.history.push('/');
+  }
 }
 
 export default UserSignIn;
