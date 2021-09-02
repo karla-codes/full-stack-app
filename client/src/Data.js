@@ -29,6 +29,8 @@ export default class Data {
       return response.json().then(data => {
         return data.errors;
       });
+    } else {
+      throw new Error();
     }
   }
 
@@ -37,22 +39,9 @@ export default class Data {
     const response = await this.api('/courses', 'GET', null);
     if (response.status === 200) {
       return response.json().then(data => {
-        console.log(data.courses);
         return data.courses;
       });
     }
-
-    // .then(res => res.json())
-    // .then(data => {
-    //   return data.courses;
-    // })
-    //
-    // console.log(response.json().then(data => console.log(data.courses)));
-    // .then(res => res.json())
-    // .then(data => console.log(data))
-    // .catch(err => {
-    //   console.log('Error fetching and parsing data', err);
-    // });
   }
 
   // sends POST request to REST API and creates new course - CreateCourse
