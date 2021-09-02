@@ -1,6 +1,6 @@
 export default class Data {
   // makes GET and POST requests to the REST API
-  api(path, method, body = null) {
+  api(path, method, body = null, requiresAuth = false, credentials = null) {
     const url = 'http://localhost:5000/api' + path;
 
     const options = {
@@ -14,11 +14,32 @@ export default class Data {
       options.body = JSON.stringify(body);
     }
 
+    if (requiresAuth) {
+      // encodes username and password
+      const encodedCredentials = btoa(
+        `${credentials.emailAddress}:${credentials.password}`
+      );
+
+      options.headers['Authorization'] = `Basic ${encodedCredentials}`;
+    }
+
     return fetch(url, options);
   }
 
   // sends GET request to REST API and returns user - UserSignIn
-  async getUser() {}
+  async getUser(emailAddress, password) {
+    const response = await this.api('/users', 'GET', null, true, {
+      emailAddress,
+      password,
+    });
+    if (response.status === 200) {
+      return response.json().then(data => data);
+    } else if (response.status === 401) {
+      return null;
+    } else {
+      throw new Error();
+    }
+  }
 
   // sends a POST request to REST API and creates new user - UserSignUp
   async createUser(user) {
