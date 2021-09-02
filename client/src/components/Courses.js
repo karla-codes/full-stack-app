@@ -17,6 +17,7 @@ function Courses(props) {
       });
 
     console.log(courses);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const coursesArr = courses.map(course => {
@@ -24,6 +25,7 @@ function Courses(props) {
       <Link
         to={`/courses/${course.id}`}
         className="course--module course--link"
+        key={course.id}
       >
         <h2 className="course--label">{course.title}</h2>
         <h3 className="course--title">{course.description}</h3>
