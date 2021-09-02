@@ -33,13 +33,9 @@ export class Provider extends Component {
   signIn = async (username, password) => {};
   // - Sign Out
   signOut = async () => {};
-
-  // - Cancel
-  cancel = e => {
-    e.preventDefault();
-    this.props.history.push('/courses');
-  };
 }
+
+export const Consumer = Context.Consumer;
 
 export default function withContext(Component) {
   return function ContextComponent(props) {
