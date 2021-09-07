@@ -1,29 +1,57 @@
-import axios from 'axios';
 import React, { useState, useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
 
-function CourseDetail() {
+function CourseDetail(props) {
   const [course, setCourse] = useState('');
+  const [courseAuthor, setCourseAuthor] = useState('');
+
+  const { context } = props;
+  const authUser = context.authenticatedUser;
+  const { id } = useParams();
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:5000/api/courses/2`)
-      .then(res => {
-        setCourse(res.data.course);
+    context.data
+      .getCourse(id)
+      .then(data => {
+        setCourse(data);
+        setCourseAuthor(data.User);
       })
-      .catch(err => console.log('Error fetching data', err));
+      .catch(err => console.log(err));
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  function isUserAuthenticated() {
+    if (authUser) {
+      if (authUser.id === courseAuthor.id) {
+        return (
+          <Link className="button" to={`/courses/${id}/update`}>
+            Update Course
+          </Link>
+        );
+      } else {
+        return (
+          <Link className="button" to="/forbidden">
+            Update Course
+          </Link>
+        );
+      }
+    }
+    return (
+      <Link className="button" to="/signin">
+        Update Course
+      </Link>
+    );
+  }
 
   return (
     <main>
       <div className="actions--bar">
         <div className="wrap">
-          <a className="button" href={'/courses' + course.id}>
-            Update Course
-          </a>
-          <a className="button button-secondary" href="/courses">
+          {isUserAuthenticated()}
+          <Link className="button button-secondary" to="/">
             Return to List
-          </a>
+          </Link>
         </div>
       </div>
       <div className="wrap">
@@ -33,15 +61,17 @@ function CourseDetail() {
             <div>
               <h3 className="course--detail--title">Course</h3>
               <h4 className="course--name">{course.title}</h4>
-              <p>Course Author</p>
-              <p>Course Information</p>
+              <p>
+                {courseAuthor.firstName} {courseAuthor.lastName}
+              </p>
+              <p>{course.description}</p>
             </div>
             <div>
               <h3 className="course--detail--title">Estimated Time</h3>
-              <p>14 hours</p>
+              <p>{course.estimatedTime}</p>
               <h3 className="course--detail--title">Materials Needed</h3>
               <ul className="course--detail--list">
-                <li>List of items</li>
+                <li>{course.materialsNeeded}</li>
               </ul>
             </div>
           </div>
