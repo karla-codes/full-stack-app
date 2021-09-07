@@ -7,8 +7,6 @@ function UserSignIn(props) {
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState([]);
 
-  // need to add authentication when signing in
-
   return (
     <Form
       submit={submit}
@@ -51,21 +49,28 @@ function UserSignIn(props) {
 
   function submit() {
     const { context } = props;
-    // const { from } = props.location.state || { from: { pathname: '/' } };
-    context.actions
-      .signIn(username, password)
-      .then(user => {
-        if (user === null) {
-          return setErrors({ errors: ['Sign in was unsuccessful'] });
-        } else {
-          props.history.push('/');
-          console.log(`${username} was signed in successfully!`);
-        }
-      })
-      .catch(err => {
-        console.log(err);
-        // props.history.push('/error')
-      });
+
+    // if inputs are left blank, return error message
+    if (username === '' || password === '') {
+      setErrors(['Email address and password are required']);
+      props.history.push('/signin');
+    } else {
+      context.actions
+        .signIn(username, password)
+        .then(user => {
+          console.log(user);
+          if (user === null) {
+            setErrors(['Sign in was unsuccessfull']);
+          } else {
+            props.history.push('/');
+            console.log(`${username} was signed in successfully!`);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          // props.history.push('/error')
+        });
+    }
   }
 
   function cancel() {
