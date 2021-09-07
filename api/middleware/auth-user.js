@@ -7,9 +7,7 @@ const { User } = require('../models');
 // authenticates users
 exports.authenticateUser = async (req, res, next) => {
   let message;
-  console.log(req);
   const credentials = auth(req);
-  console.log(credentials);
 
   if (credentials) {
     const user = await User.findOne({
@@ -35,8 +33,8 @@ exports.authenticateUser = async (req, res, next) => {
   }
 
   if (message) {
-    console.warn(message);
-    res.status(401).json({ message: 'Access denied' });
+    console.log(message);
+    res.status(401).json({ message: 'Access Denied' });
   } else {
     next();
   }
