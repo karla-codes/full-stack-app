@@ -15,8 +15,6 @@ function Courses(props) {
         // push history to an error page
         // this.props.history.push('/error')
       });
-
-    console.log(courses);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
