@@ -106,17 +106,16 @@ router.post(
 // route that updates a single course
 router.put(
   '/courses/:id',
-  authenticateUser,
   asyncHandler(async (req, res) => {
     const course = await Course.findByPk(req.params.id);
-    console.log(course);
-    console.log(req.currentUser);
 
     if (course) {
-      if (course.userId === req.currentUser.id) {
+      if (course.userId === req.body.id) {
         await course.update({
           title: req.body.title,
           description: req.body.description,
+          estimatedTime: req.body.estimatedTime,
+          materialsNeeded: req.body.materialsNeeded,
         });
         res.status(204).end();
       } else {
