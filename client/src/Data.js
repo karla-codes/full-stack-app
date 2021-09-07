@@ -69,5 +69,35 @@ export default class Data {
   async createCourse() {}
 
   // sends GET request to REST API and returns individual course - CourseDetail
-  async getCourse() {}
+  async getCourse(courseID) {
+    const response = await this.api(`/courses/${courseID}`, 'GET', null);
+    if (response.status === 200) {
+      return response.json().then(data => {
+        return data.course;
+      });
+    }
+  }
+
+  // sends PUT request to REST API and updates existing course - UpdateCourse
+  async updateCourse(course, courseID) {
+    const response = await this.api(
+      `/courses/${courseID}`,
+      'PUT',
+      course,
+      false,
+      null
+    );
+    if (response.status === 204) {
+      console.log(response);
+      return [];
+    } else if (response.status === 403) {
+      console.log(response);
+      return response.json().then(data => {
+        return data.errors;
+      });
+    } else {
+      console.log(response);
+      throw new Error();
+    }
+  }
 }
