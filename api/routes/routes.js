@@ -1,7 +1,6 @@
 'use strict';
 
 const express = require('express');
-const bcrypt = require('bcrypt');
 
 const router = express.Router();
 const { User, Course } = require('../models');
@@ -133,9 +132,6 @@ router.delete(
   authenticateUser,
   asyncHandler(async (req, res) => {
     const course = await Course.findByPk(req.params.id);
-    console.log(course);
-    console.log(req.currentUser);
-
     if (course) {
       if (course.userId === req.currentUser.id) {
         await course.destroy(course);
