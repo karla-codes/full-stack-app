@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import Form from './Form';
-
 function CreateCourse(props) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -12,13 +10,12 @@ function CreateCourse(props) {
   const authUser = context.authenticatedUser;
 
   return (
-    <Form
-      submit={submit}
-      cancel={cancel}
-      errors={errors}
-      submitButtonText="Create Course"
-      elements={() => (
-        <React.Fragment>
+    <main>
+      <div className="wrap">
+        <h2>Create Course</h2>
+        {/* Validation errors go here */}
+        <DisplayErrors errors={errors} />
+        <form onSubmit={submit}>
           <div className="main--flex">
             <div>
               <label htmlFor="courseTitle">Course Title</label>
@@ -26,7 +23,7 @@ function CreateCourse(props) {
                 id="courseTitle"
                 name="courseTitle"
                 type="text"
-                value=""
+                onChange={change}
               ></input>
               <p>
                 By {authUser.firstName} {authUser.lastName}
@@ -35,6 +32,7 @@ function CreateCourse(props) {
               <textarea
                 id="courseDescription"
                 name="courseDescription"
+                onChange={change}
               ></textarea>
             </div>
             <div>
@@ -43,20 +41,90 @@ function CreateCourse(props) {
                 id="estimatedTime"
                 name="estimatedTime"
                 type="text"
-                value=""
+                onChange={change}
               ></input>
               <label htmlFor="materialsNeeded">Materials Needed</label>
-              <textarea id="materialsNeeded" name="materialsNeeded"></textarea>
+              <textarea
+                id="materialsNeeded"
+                name="materialsNeeded"
+                onChange={change}
+              ></textarea>
             </div>
           </div>
-        </React.Fragment>
-      )}
-    />
+          <button className="button" type="submit">
+            Create Course
+          </button>
+          <button className="button button-secondary" onClick={cancel}>
+            Cancel
+          </button>
+        </form>
+      </div>
+    </main>
   );
 
-  function submit() {}
+  function DisplayErrors({ errors }) {
+    let errorsDisplay = null;
 
-  function cancel() {}
+    if (errors.length) {
+      errorsDisplay = (
+        <div>
+          <h2>Validation Errors</h2>
+          <div className="validation--errors">
+            <ul>
+              {errors.map(error => (
+                <li>{error}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      );
+    }
+
+    return errorsDisplay;
+  }
+
+  function change(e) {
+    const name = e.target.name;
+    const value = e.target.value;
+
+    if (name === 'courseTitle') {
+      return setTitle(value);
+    } else if (name === 'courseDescription') {
+      return setDescription(value);
+    } else if (name === 'estimatedTime') {
+      return setEstimatedTime(value);
+    } else if (name === 'materialsNeeded') {
+      return setMaterialsNeeded(value);
+    }
+  }
+
+  function submit(e) {
+    e.preventDefault();
+
+    const newCourse = {
+      title,
+      description,
+      estimatedTime,
+      materialsNeeded,
+      userId: authUser.id,
+    };
+
+    context.data
+      .createCourse(newCourse, authUser)
+      .then(errors => {
+        if (errors) {
+          setErrors(errors);
+        } else {
+          props.history.push('/');
+        }
+      })
+      .then()
+      .catch(err => console.log(err));
+  }
+
+  function cancel() {
+    props.history.push('/');
+  }
 }
 
 export default CreateCourse;
