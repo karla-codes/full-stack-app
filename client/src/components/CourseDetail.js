@@ -16,7 +16,9 @@ function CourseDetail(props) {
         setCourse(data);
         setCourseAuthor(data.User);
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.log(err);
+      });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -25,35 +27,32 @@ function CourseDetail(props) {
     if (authUser) {
       if (authUser.id === courseAuthor.id) {
         return (
-          <Link className="button" to={`/courses/${id}/update`}>
-            Update Course
-          </Link>
-        );
-      } else {
-        return (
-          <Link className="button" to="/forbidden">
-            Update Course
-          </Link>
+          <div className="wrap">
+            <Link className="button" to={`/courses/${id}/update`}>
+              Update Course
+            </Link>
+            <Link className="button" to={`/courses/${id}/delete`}>
+              Delete Course
+            </Link>
+            <Link className="button button-secondary" to="/">
+              Return to List
+            </Link>
+          </div>
         );
       }
     }
     return (
-      <Link className="button" to="/signin">
-        Update Course
-      </Link>
+      <div className="wrap">
+        <Link className="button button-secondary" to="/">
+          Return to List
+        </Link>
+      </div>
     );
   }
 
   return (
     <main>
-      <div className="actions--bar">
-        <div className="wrap">
-          {isUserAuthenticated()}
-          <Link className="button button-secondary" to="/">
-            Return to List
-          </Link>
-        </div>
-      </div>
+      <div className="actions--bar">{isUserAuthenticated()}</div>
       <div className="wrap">
         <h2>Course Detail</h2>
         <form>
