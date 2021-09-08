@@ -66,8 +66,11 @@ export default class Data {
   }
 
   // sends POST request to REST API and creates new course - CreateCourse
-  async createCourse(course) {
-    const response = await this.api('/courses', 'POST', course);
+  async createCourse(course, authUser) {
+    const response = await this.api('/courses', 'POST', course, true, {
+      emailAddress: authUser.emailAddress,
+      password: authUser.password,
+    });
 
     if (response.status === 201) {
       console.log(response);
