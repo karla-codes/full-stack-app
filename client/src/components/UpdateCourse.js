@@ -59,14 +59,14 @@ function UpdateCourse(props) {
                 id="estimatedTime"
                 name="estimatedTime"
                 type="text"
-                value={estimatedTime}
+                value={estimatedTime === null ? '' : estimatedTime}
                 onChange={change}
               ></input>
               <label htmlFor="materialsNeeded">Materials Needed</label>
               <textarea
                 id="materialsNeeded"
                 name="materialsNeeded"
-                value={materialsNeeded}
+                value={materialsNeeded === null ? '' : materialsNeeded}
                 onChange={change}
               ></textarea>
             </div>
