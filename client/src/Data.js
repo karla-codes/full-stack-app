@@ -66,7 +66,19 @@ export default class Data {
   }
 
   // sends POST request to REST API and creates new course - CreateCourse
-  async createCourse() {}
+  async createCourse(course) {
+    const response = await this.api('/courses', 'POST', course);
+
+    if (response.status === 201) {
+      console.log(response);
+    } else if (response.status === 400) {
+      return response.json().then(data => {
+        return data.errors;
+      });
+    } else {
+      throw new Error();
+    }
+  }
 
   // sends GET request to REST API and returns individual course - CourseDetail
   async getCourse(courseID) {
@@ -95,8 +107,35 @@ export default class Data {
       return response.json().then(data => {
         return data.errors;
       });
+    } else if (response.status === 400) {
+      return response.json().then(data => {
+        return data.errors;
+      });
     } else {
       console.log(response);
+      throw new Error();
+    }
+  }
+
+  async deleteCourse(courseID, authUser) {
+    const response = await this.api(
+      `/courses/${courseID}`,
+      'DELETE',
+      null,
+      true,
+      {
+        emailAddress: authUser.emailAddress,
+        password: authUser.password,
+      }
+    );
+
+    if (response.status === 204) {
+      return;
+    } else if (response.status === 403) {
+      return response.json().then(data => {
+        return data.errors;
+      });
+    } else {
       throw new Error();
     }
   }
