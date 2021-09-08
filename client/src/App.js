@@ -14,6 +14,7 @@ import withContext from './Context/Context';
 import PrivateRoute from './PrivateRoute';
 import UserSignOut from './components/UserSignOut';
 import Forbidden from './components/Forbidden';
+import DeleteCourse from './components/DeleteCourse';
 
 // components w/Context
 const HeaderWithContext = withContext(Header);
@@ -24,6 +25,7 @@ const UserSignInWithContext = withContext(UserSignIn);
 const UserSignOutWithContext = withContext(UserSignOut);
 const CreateCourseWithContext = withContext(CreateCourse);
 const UpdateCourseWithContext = withContext(UpdateCourse);
+const DeleteCourseWithContext = withContext(DeleteCourse);
 
 // main container Component
 function App() {
@@ -42,6 +44,7 @@ function App() {
           path="/courses/create"
           component={CreateCourseWithContext}
         />
+        <Route path="/courses/:id/delete" component={DeleteCourseWithContext} />
         <Route path="/courses/:id" component={CourseDetailWithContext} />
         <Route path="/signin" component={UserSignInWithContext} />
         <Route path="/signup" component={UserSignUpWithContext} />
