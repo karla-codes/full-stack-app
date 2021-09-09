@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
+import NotFound from './NotFound';
+import Forbidden from './Forbidden';
 
 function UpdateCourse(props) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [estimatedTime, setEstimatedTime] = useState('');
   const [materialsNeeded, setMaterialsNeeded] = useState('');
-  // const [course, setCourse] = useState('');
+  const [notFound, setNotFound] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState([]);
-  // Needs to be wrapped in Context
+  const [courseAuthorID, setCourseAuthorID] = useState('');
+
   const authUser = props.context.authenticatedUser;
   const { id } = useParams();
 
@@ -16,71 +20,107 @@ function UpdateCourse(props) {
     props.context.data
       .getCourse(id)
       .then(data => {
-        setTitle(data.title);
-        setDescription(data.description);
-        setEstimatedTime(data.estimatedTime);
-        setMaterialsNeeded(data.materialsNeeded);
-        // setCourse(data);
+        if (data.message) {
+          console.log(data.message);
+          setNotFound(true);
+          setLoading(false);
+        } else {
+          setLoading(false);
+          setTitle(data.title);
+          setDescription(data.description);
+          setEstimatedTime(data.estimatedTime);
+          setMaterialsNeeded(data.materialsNeeded);
+          setCourseAuthorID(data.userId);
+        }
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.log(err);
+        props.history.push('/error');
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return (
-    <main>
-      <div className="wrap">
-        <h2>Update Course</h2>
-        <DisplayErrors errors={errors} />
-        <form onSubmit={submit}>
-          <div className="main--flex">
-            <div>
-              <label htmlFor="courseTitle">Course Title</label>
-              <input
-                id="courseTitle"
-                name="courseTitle"
-                type="text"
-                value={title}
-                onChange={change}
-              ></input>
-              <p>
-                By {authUser.firstName} {authUser.lastName}
-              </p>
-              <label htmlFor="courseDescription">Course description</label>
-              <textarea
-                id="courseDescription"
-                name="courseDescription"
-                value={description}
-                onChange={change}
-              ></textarea>
+  function canUserUpdateCourse() {
+    if (authUser.id !== courseAuthorID) {
+      return <Forbidden />;
+    } else {
+      return (
+        <div className="wrap">
+          <h2>Update Course</h2>
+          <DisplayErrors errors={errors} />
+          <form onSubmit={submit}>
+            <div className="main--flex">
+              <div>
+                <label htmlFor="courseTitle">Course Title</label>
+                <input
+                  id="courseTitle"
+                  name="courseTitle"
+                  type="text"
+                  value={title}
+                  onChange={change}
+                ></input>
+                <p>
+                  By {authUser.firstName} {authUser.lastName}
+                </p>
+                <label htmlFor="courseDescription">Course description</label>
+                <textarea
+                  id="courseDescription"
+                  name="courseDescription"
+                  value={description}
+                  onChange={change}
+                ></textarea>
+              </div>
+              <div>
+                <label htmlFor="estimatedTime">Estimated Time</label>
+                <input
+                  id="estimatedTime"
+                  name="estimatedTime"
+                  type="text"
+                  value={estimatedTime === null ? '' : estimatedTime}
+                  onChange={change}
+                ></input>
+                <label htmlFor="materialsNeeded">Materials Needed</label>
+                <textarea
+                  id="materialsNeeded"
+                  name="materialsNeeded"
+                  value={materialsNeeded === null ? '' : materialsNeeded}
+                  onChange={change}
+                ></textarea>
+              </div>
             </div>
-            <div>
-              <label htmlFor="estimatedTime">Estimated Time</label>
-              <input
-                id="estimatedTime"
-                name="estimatedTime"
-                type="text"
-                value={estimatedTime === null ? '' : estimatedTime}
-                onChange={change}
-              ></input>
-              <label htmlFor="materialsNeeded">Materials Needed</label>
-              <textarea
-                id="materialsNeeded"
-                name="materialsNeeded"
-                value={materialsNeeded === null ? '' : materialsNeeded}
-                onChange={change}
-              ></textarea>
-            </div>
-          </div>
-          <button className="button" type="submit">
-            Update Course
-          </button>
-          <button className="button button-secondary" onClick={cancel}>
-            Cancel
-          </button>
-        </form>
-      </div>
-    </main>
-  );
+            <button className="button" type="submit">
+              Update Course
+            </button>
+            <button className="button button-secondary" onClick={cancel}>
+              Cancel
+            </button>
+          </form>
+        </div>
+      );
+    }
+  }
+
+  function doesCourseExist() {
+    if (notFound) {
+      return <NotFound />;
+    } else {
+      return canUserUpdateCourse();
+    }
+  }
+
+  function isLoading() {
+    if (loading) {
+      return null;
+    } else {
+      return doesCourseExist();
+    }
+  }
+
+  function render() {
+    return isLoading();
+  }
+
+  return <main>{render()}</main>;
 
   function DisplayErrors({ errors }) {
     let errorsDisplay = null;
