@@ -1,6 +1,7 @@
 'use strict';
 
 const express = require('express');
+const bcrypt = require('bcrypt');
 
 const router = express.Router();
 const { User, Course } = require('../models');
@@ -48,6 +49,10 @@ router.post(
   asyncHandler(async (req, res) => {
     const newUser = await req.body;
 
+    if (newUser.password) {
+      newUser.password = bcrypt.hashSync(newUser.password, 10);
+    }
+
     await User.create(newUser);
     res.status(201).location('/').end();
   })
@@ -87,7 +92,12 @@ router.get(
         },
       ],
     });
-    res.status(200).json({ course });
+
+    if (course) {
+      res.status(200).json({ course });
+    } else {
+      res.status(404).json({ message: 'Course not found' });
+    }
   })
 );
 
