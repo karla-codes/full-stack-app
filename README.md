@@ -17,7 +17,7 @@ Users can create an account and sign in to make changes to the database.
 ## Installation
 
 1. Download or clone repo
-2. install dependencies for both the API and Client
+2. Install dependencies for both the API and Client
 
 ```
 $ cd api
