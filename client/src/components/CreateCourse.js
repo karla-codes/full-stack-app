@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 function CreateCourse(props) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -13,7 +14,6 @@ function CreateCourse(props) {
     <main>
       <div className="wrap">
         <h2>Create Course</h2>
-        {/* Validation errors go here */}
         <DisplayErrors errors={errors} />
         <form onSubmit={submit}>
           <div className="main--flex">
@@ -119,7 +119,10 @@ function CreateCourse(props) {
         }
       })
       .then()
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.log(err);
+        props.history.push('/error');
+      });
   }
 
   function cancel() {

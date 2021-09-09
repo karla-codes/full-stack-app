@@ -9,8 +9,6 @@ function UserSignUp(props) {
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState([]);
 
-  // add "cancel" function to Context
-  // POST route: /api/users
   return (
     <Form
       submit={submit}
@@ -97,8 +95,7 @@ function UserSignUp(props) {
       })
       .catch(err => {
         console.log(err);
-        // render NotFound Component
-        // props.history.push('/error')
+        props.history.push('/error');
       });
   }
 

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-// import axios from 'axios';
 
 function Courses(props) {
   const [courses, setCourses] = useState([]);
@@ -14,8 +13,7 @@ function Courses(props) {
       .then(data => setCourses(data))
       .catch(err => {
         console.log(err);
-        // push history to an error page
-        // this.props.history.push('/error')
+        this.props.history.push('/error');
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -80,7 +78,6 @@ function Courses(props) {
   return (
     <div className="wrap main--grid">
       {coursesArr}
-      {/* Link to add new course */}
       {isUserAuthenticated()}
     </div>
   );
