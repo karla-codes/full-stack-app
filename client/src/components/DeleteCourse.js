@@ -29,7 +29,10 @@ function DeleteCourse(props) {
       .then(() => {
         props.history.push('/');
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.log(err);
+        props.history.push('/error');
+      });
   }
 
   function cancel() {

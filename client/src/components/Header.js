@@ -2,10 +2,8 @@ import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
 function Header(props) {
-  // wrap in Context
   const { context } = props;
   const authUser = context.authenticatedUser;
-  // check if user is authenticated
 
   return (
     <header>
@@ -29,8 +27,6 @@ function Header(props) {
               </li>
             </ul>
           )}
-          {/* If authenticatedUser === false */}
-          {/* else */}
         </nav>
       </div>
     </header>

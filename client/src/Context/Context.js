@@ -36,7 +36,6 @@ export class Provider extends Component {
     );
   }
 
-  // items to add to Context
   // - Sign In (authenticate)
   signIn = async (username, password) => {
     const user = await this.data.getUser(username, password);
@@ -51,6 +50,7 @@ export class Provider extends Component {
     }
     return user;
   };
+
   // - Sign Out
   signOut = async () => {
     this.setState({ authenticatedUser: null });

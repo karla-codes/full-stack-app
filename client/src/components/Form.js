@@ -1,7 +1,6 @@
 import React from 'react';
 
 export default function Form(props) {
-  // const { actions } = this.props.context;
   const { submit, submitButtonText, cancel, errors } = props;
   const { elements } = props;
 
