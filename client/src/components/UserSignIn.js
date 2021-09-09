@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Form from './Form';
-// import { Link } from 'react-router-dom';
 
 function UserSignIn(props) {
   const [username, setUsername] = useState('');
@@ -62,13 +61,13 @@ function UserSignIn(props) {
           if (user === null) {
             setErrors(['Sign in was unsuccessfull']);
           } else {
-            props.history.push('/');
+            props.history.goBack();
             console.log(`${username} was signed in successfully!`);
           }
         })
         .catch(err => {
           console.log(err);
-          // props.history.push('/error')
+          props.history.push('/error');
         });
     }
   }
