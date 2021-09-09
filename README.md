@@ -7,8 +7,7 @@ Users can:
 - retrieve a list of courses
 - view details for a specific course
 - create, update, and delete courses
-
-Users can create an account and sign in to make changes to the database.
+- create an account and sign in to make changes to the database
 
 ## Built With
 
