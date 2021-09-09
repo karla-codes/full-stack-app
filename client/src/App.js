@@ -15,6 +15,8 @@ import PrivateRoute from './PrivateRoute';
 import UserSignOut from './components/UserSignOut';
 import Forbidden from './components/Forbidden';
 import DeleteCourse from './components/DeleteCourse';
+import NotFound from './components/NotFound';
+import Error from './components/Error';
 
 // components w/Context
 const HeaderWithContext = withContext(Header);
@@ -29,7 +31,6 @@ const DeleteCourseWithContext = withContext(DeleteCourse);
 
 // main container Component
 function App() {
-  // set up routes
   return (
     <Router>
       <HeaderWithContext />
@@ -46,10 +47,12 @@ function App() {
         />
         <Route path="/courses/:id/delete" component={DeleteCourseWithContext} />
         <Route path="/courses/:id" component={CourseDetailWithContext} />
-        <Route path="/signin" component={UserSignInWithContext} />
         <Route path="/signup" component={UserSignUpWithContext} />
+        <Route path="/signin" component={UserSignInWithContext} />
         <Route path="/signout" component={UserSignOutWithContext} />
         <Route path="/forbidden" component={Forbidden} />
+        <Route path="/error" component={Error} />
+        <Route component={NotFound} />
       </Switch>
     </Router>
   );
