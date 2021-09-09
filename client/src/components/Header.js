@@ -23,6 +23,8 @@ function Header(props) {
             <ul className="header--signedout">
               <li>
                 <NavLink to="/signup">Sign Up</NavLink>
+              </li>
+              <li>
                 <NavLink to="/signin">Sign In</NavLink>
               </li>
             </ul>
