@@ -1,7 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Form(props) {
-  const { submit, submitButtonText, cancel, errors } = props;
+  const { submit, text, cancel, errors } = props;
   const { elements } = props;
 
   function handleSubmit(e) {
@@ -14,19 +15,39 @@ export default function Form(props) {
     cancel();
   }
 
+  function displayCTA() {
+    if (text === 'Sign In') {
+      return (
+        <p>
+          Don't have a user account? Click here to
+          <Link to="/signup"> Sign Up</Link>!
+        </p>
+      );
+    } else {
+      return (
+        <p>
+          Already have a user account? Click here to
+          <Link to="/signin"> Sign In</Link>!
+        </p>
+      );
+    }
+  }
+
   return (
     <main>
-      <DisplayErrors errors={errors} />
       <div className="form--centered">
+        <h2>{text}</h2>
+        <DisplayErrors errors={errors} />
         <form onSubmit={handleSubmit}>
           {elements()}
           <button className="button" type="submit">
-            {submitButtonText}
+            {text}
           </button>
           <button className="button button-secondary" onClick={handleCancel}>
             Cancel
           </button>
         </form>
+        {displayCTA()}
       </div>
     </main>
   );
@@ -37,15 +58,13 @@ function DisplayErrors({ errors }) {
 
   if (errors.length) {
     errorsDisplay = (
-      <div>
-        <h2>Validation Errors</h2>
-        <div className="validation--errors">
-          <ul>
-            {errors.map(error => (
-              <li>{error}</li>
-            ))}
-          </ul>
-        </div>
+      <div className="validation--errors">
+        <h3>Validation Errors</h3>
+        <ul>
+          {errors.map((error, index) => (
+            <li key={index}>{error}</li>
+          ))}
+        </ul>
       </div>
     );
   }
