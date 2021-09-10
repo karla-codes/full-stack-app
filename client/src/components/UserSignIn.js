@@ -11,7 +11,7 @@ function UserSignIn(props) {
       submit={submit}
       cancel={cancel}
       errors={errors}
-      submitButtonText="Sign In"
+      text="Sign In"
       elements={() => (
         <React.Fragment>
           <label htmlFor="emailAddress">Email Address</label>
