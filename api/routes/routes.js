@@ -73,8 +73,11 @@ router.get(
         },
       ],
     });
-
-    res.status(200).json({ courses });
+    if (courses) {
+      res.status(200).json({ courses });
+    } else {
+      end();
+    }
   })
 );
 
