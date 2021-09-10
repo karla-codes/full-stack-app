@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
 import NotFound from './NotFound';
-import Forbidden from './Forbidden';
 
 function UpdateCourse(props) {
   const [title, setTitle] = useState('');
@@ -11,7 +10,6 @@ function UpdateCourse(props) {
   const [notFound, setNotFound] = useState(false);
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState([]);
-  const [courseAuthorID, setCourseAuthorID] = useState('');
 
   const authUser = props.context.authenticatedUser;
   const { id } = useParams();
@@ -30,7 +28,6 @@ function UpdateCourse(props) {
           setDescription(data.description);
           setEstimatedTime(data.estimatedTime);
           setMaterialsNeeded(data.materialsNeeded);
-          setCourseAuthorID(data.userId);
         }
       })
       .catch(err => {
@@ -40,9 +37,9 @@ function UpdateCourse(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function canUserUpdateCourse() {
-    if (authUser.id !== courseAuthorID) {
-      return <Forbidden />;
+  function doesCourseExist() {
+    if (notFound) {
+      return <NotFound />;
     } else {
       return (
         <div className="wrap">
@@ -100,14 +97,6 @@ function UpdateCourse(props) {
     }
   }
 
-  function doesCourseExist() {
-    if (notFound) {
-      return <NotFound />;
-    } else {
-      return canUserUpdateCourse();
-    }
-  }
-
   function isLoading() {
     if (loading) {
       return null;
@@ -127,15 +116,13 @@ function UpdateCourse(props) {
 
     if (errors.length) {
       errorsDisplay = (
-        <div>
-          <h2>Validation Errors</h2>
-          <div className="validation--errors">
-            <ul>
-              {errors.map(error => (
-                <li>{error}</li>
-              ))}
-            </ul>
-          </div>
+        <div className="validation--errors">
+          <h3>Validation Errors</h3>
+          <ul>
+            {errors.map((error, index) => (
+              <li key={index}>{error}</li>
+            ))}
+          </ul>
         </div>
       );
     }
