@@ -14,7 +14,9 @@ function Header(props) {
         <nav>
           {authUser ? (
             <ul className="header--signedin">
-              <li>Welcome, {authUser.firstName}</li>
+              <li>
+                Welcome, {authUser.firstName} {authUser.lastName}
+              </li>
               <li>
                 <NavLink to="/signout">Sign Out</NavLink>
               </li>
