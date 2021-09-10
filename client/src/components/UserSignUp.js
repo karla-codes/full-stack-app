@@ -14,7 +14,7 @@ function UserSignUp(props) {
       submit={submit}
       cancel={cancel}
       errors={errors}
-      submitButtonText="Sign Up"
+      text="Sign Up"
       elements={() => (
         <React.Fragment>
           <label htmlFor="firstName">First Name</label>
@@ -82,20 +82,21 @@ function UserSignUp(props) {
 
     context.data
       .createUser(user)
-      .then(errors => {
-        if (errors.length) {
-          setErrors(errors);
-        } else {
+      .then(data => {
+        if (data.length) {
+          setErrors(data);
+        } else if (data) {
           // Once user is registered successfully, log them in and send to welcome page
           context.actions.signIn(emailAddress, password).then(() => {
-            props.history.push('/');
+            props.history.goBack();
           });
           console.log('User was successfully signed up!');
+        } else {
+          props.history.push('/error');
         }
       })
       .catch(err => {
         console.log(err);
-        props.history.push('/error');
       });
   }
 
