@@ -67,15 +67,13 @@ function CreateCourse(props) {
 
     if (errors.length) {
       errorsDisplay = (
-        <div>
-          <h2>Validation Errors</h2>
-          <div className="validation--errors">
-            <ul>
-              {errors.map(error => (
-                <li>{error}</li>
-              ))}
-            </ul>
-          </div>
+        <div className="validation--errors">
+          <h3>Validation Errors</h3>
+          <ul>
+            {errors.map((error, index) => (
+              <li key={index}>{error}</li>
+            ))}
+          </ul>
         </div>
       );
     }
