@@ -1,5 +1,8 @@
 import React from 'react';
 
+/**
+ * Renders 404 error message
+ */
 function NotFound() {
   return (
     <main>

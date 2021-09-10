@@ -3,6 +3,10 @@ import { Link, useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import NotFound from './NotFound';
 
+/**
+ * Renders specified course information
+ * If authenticated user owns the course, a 'delete' and 'update' button will render
+ */
 function CourseDetail(props) {
   const [course, setCourse] = useState('');
   const [courseAuthor, setCourseAuthor] = useState('');

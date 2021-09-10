@@ -1,5 +1,8 @@
 import React from 'react';
 
+/**
+ * Renders a message letting user know they are not authorized to be on that page
+ */
 function Forbidden() {
   return (
     <main>

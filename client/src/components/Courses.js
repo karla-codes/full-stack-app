@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
+/**
+ * Renders a list of all courses
+ */
 function Courses(props) {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);

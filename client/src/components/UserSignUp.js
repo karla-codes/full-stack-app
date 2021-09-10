@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 // import { Link } from 'react-router-dom';
 import Form from './Form';
 
+/**
+ *
+ * Renders form that allows a new user to sign up
+ */
 function UserSignUp(props) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');

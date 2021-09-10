@@ -1,5 +1,8 @@
 import React from 'react';
 
+/**
+ * Renders message for server errors
+ */
 function UnhandledError() {
   return (
     <main>

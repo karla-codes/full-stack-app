@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
 import NotFound from './NotFound';
 
+/**
+ * Renders a form that allows authorized user to update their course
+ * If course does not exist, renders NotFound component
+ */
 function UpdateCourse(props) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');

@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import Form from './Form';
 
+/**
+ * Renders user sign in form
+ */
 function UserSignIn(props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -52,12 +55,10 @@ function UserSignIn(props) {
     // if inputs are left blank, return error message
     if (username === '' || password === '') {
       setErrors(['Email address and password are required']);
-      props.history.push('/signin');
     } else {
       context.actions
         .signIn(username, password)
         .then(user => {
-          console.log(user);
           if (user === null) {
             setErrors(['Sign in was unsuccessfull']);
           } else {

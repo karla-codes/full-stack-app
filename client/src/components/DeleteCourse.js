@@ -1,6 +1,10 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
+/**
+ *
+ * Renders a warning before user permanently deletes a course
+ */
 function DeleteCourse(props) {
   const { context } = props;
   const { id } = useParams();

@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 
+/**
+ * Renders a form that allows user to create a new course
+ */
 function CreateCourse(props) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');

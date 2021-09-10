@@ -1,6 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+/**
+ *
+ * Form for UserSignIn and UserSignUp components
+ */
 export default function Form(props) {
   const { submit, text, cancel, errors } = props;
   const { elements } = props;

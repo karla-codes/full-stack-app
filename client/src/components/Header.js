@@ -1,6 +1,11 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
+/**
+ *
+ * Renders the app header
+ * Contains Link to courses, sign in, sign out, and sign up components
+ */
 function Header(props) {
   const { context } = props;
   const authUser = context.authenticatedUser;
