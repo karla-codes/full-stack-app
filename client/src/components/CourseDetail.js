@@ -67,7 +67,7 @@ function CourseDetail(props) {
       return <NotFound />;
     } else {
       return (
-        <div>
+        <main>
           <div className="actions--bar">{isUserAuthenticated()}</div>
           <div className="wrap">
             <h2>Course Detail</h2>
@@ -92,7 +92,7 @@ function CourseDetail(props) {
               </div>
             </form>
           </div>
-        </div>
+        </main>
       );
     }
   }
