@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Redirect } from 'react-router';
 
 /**
  * Renders a form that allows user to create a new course
@@ -13,57 +14,65 @@ function CreateCourse(props) {
   const { context } = props;
   const authUser = context.authenticatedUser;
 
-  return (
-    <main>
-      <div className="wrap">
-        <h2>Create Course</h2>
-        <DisplayErrors errors={errors} />
-        <form onSubmit={submit}>
-          <div className="main--flex">
-            <div>
-              <label htmlFor="courseTitle">Course Title</label>
-              <input
-                id="courseTitle"
-                name="courseTitle"
-                type="text"
-                onChange={change}
-              ></input>
-              <p>
-                By {authUser.firstName} {authUser.lastName}
-              </p>
-              <label htmlFor="courseDescription">Course description</label>
-              <textarea
-                id="courseDescription"
-                name="courseDescription"
-                onChange={change}
-              ></textarea>
-            </div>
-            <div>
-              <label htmlFor="estimatedTime">Estimated Time</label>
-              <input
-                id="estimatedTime"
-                name="estimatedTime"
-                type="text"
-                onChange={change}
-              ></input>
-              <label htmlFor="materialsNeeded">Materials Needed</label>
-              <textarea
-                id="materialsNeeded"
-                name="materialsNeeded"
-                onChange={change}
-              ></textarea>
-            </div>
+  function isAuthUser() {
+    if (authUser) {
+      return (
+        <main>
+          <div className="wrap">
+            <h2>Create Course</h2>
+            <DisplayErrors errors={errors} />
+            <form onSubmit={submit}>
+              <div className="main--flex">
+                <div>
+                  <label htmlFor="courseTitle">Course Title</label>
+                  <input
+                    id="courseTitle"
+                    name="courseTitle"
+                    type="text"
+                    onChange={change}
+                  ></input>
+                  <p>
+                    By {authUser.firstName} {authUser.lastName}
+                  </p>
+                  <label htmlFor="courseDescription">Course description</label>
+                  <textarea
+                    id="courseDescription"
+                    name="courseDescription"
+                    onChange={change}
+                  ></textarea>
+                </div>
+                <div>
+                  <label htmlFor="estimatedTime">Estimated Time</label>
+                  <input
+                    id="estimatedTime"
+                    name="estimatedTime"
+                    type="text"
+                    onChange={change}
+                  ></input>
+                  <label htmlFor="materialsNeeded">Materials Needed</label>
+                  <textarea
+                    id="materialsNeeded"
+                    name="materialsNeeded"
+                    onChange={change}
+                  ></textarea>
+                </div>
+              </div>
+              <button className="button" type="submit">
+                Create Course
+              </button>
+              <button className="button button-secondary" onClick={cancel}>
+                Cancel
+              </button>
+            </form>
           </div>
-          <button className="button" type="submit">
-            Create Course
-          </button>
-          <button className="button button-secondary" onClick={cancel}>
-            Cancel
-          </button>
-        </form>
-      </div>
-    </main>
-  );
+        </main>
+      );
+    } else {
+      return <Redirect to="/signin" />;
+    }
+  }
+
+  return isAuthUser();
 
   function DisplayErrors({ errors }) {
     let errorsDisplay = null;
