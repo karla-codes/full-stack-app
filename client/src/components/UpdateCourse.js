@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
-import NotFound from './NotFound';
 
 /**
  * Renders a form that allows authorized user to update their course
@@ -11,7 +10,6 @@ function UpdateCourse(props) {
   const [description, setDescription] = useState('');
   const [estimatedTime, setEstimatedTime] = useState('');
   const [materialsNeeded, setMaterialsNeeded] = useState('');
-  const [notFound, setNotFound] = useState(false);
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState([]);
 
@@ -22,16 +20,19 @@ function UpdateCourse(props) {
     props.context.data
       .getCourse(id)
       .then(data => {
-        if (data.message) {
-          console.log(data.message);
-          setNotFound(true);
-          setLoading(false);
-        } else {
-          setLoading(false);
-          setTitle(data.title);
-          setDescription(data.description);
-          setEstimatedTime(data.estimatedTime);
-          setMaterialsNeeded(data.materialsNeeded);
+        if (data) {
+          if (data.message) {
+            setLoading(false);
+            props.history.push('/notfound');
+          } else if (data.User.emailAddress === authUser.emailAddress) {
+            setLoading(false);
+            setTitle(data.title);
+            setDescription(data.description);
+            setEstimatedTime(data.estimatedTime);
+            setMaterialsNeeded(data.materialsNeeded);
+          } else {
+            props.history.push('/forbidden');
+          }
         }
       })
       .catch(err => {
@@ -41,9 +42,9 @@ function UpdateCourse(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function doesCourseExist() {
-    if (notFound) {
-      return <NotFound />;
+  function isLoading() {
+    if (loading) {
+      return null;
     } else {
       return (
         <div className="wrap">
@@ -101,19 +102,7 @@ function UpdateCourse(props) {
     }
   }
 
-  function isLoading() {
-    if (loading) {
-      return null;
-    } else {
-      return doesCourseExist();
-    }
-  }
-
-  function render() {
-    return isLoading();
-  }
-
-  return <main>{render()}</main>;
+  return <main>{isLoading()}</main>;
 
   function DisplayErrors({ errors }) {
     let errorsDisplay = null;
@@ -164,16 +153,14 @@ function UpdateCourse(props) {
 
     context.data
       .updateCourse(updatedCourse, id)
-      .then(errors => {
-        if (errors.length) {
-          setErrors(errors);
-        } else {
-          console.log(updatedCourse);
-          props.history.push(`/courses/${id}`);
+      .then(data => {
+        if (data) {
+          data.length ? setErrors(data) : props.history.push(`/courses/${id}`);
         }
       })
       .catch(err => {
         console.log(err);
+        props.history.push('/error');
       });
   }
 
