@@ -51,6 +51,7 @@ function UserSignIn(props) {
 
   function submit() {
     const { context } = props;
+    const { from } = props.location.state || { from: '/' };
 
     // if inputs are left blank, return error message
     if (username === '' || password === '') {
@@ -62,7 +63,7 @@ function UserSignIn(props) {
           if (user === null) {
             setErrors(['Sign in was unsuccessfull']);
           } else {
-            props.history.goBack();
+            props.history.push(from);
             console.log(`${username} was signed in successfully!`);
           }
         })
