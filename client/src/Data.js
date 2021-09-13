@@ -84,6 +84,10 @@ export default class Data {
       return response.json().then(data => {
         return data.course;
       });
+    } else if (response.status === 404) {
+      return response.json().then(res => {
+        return res;
+      });
     }
   }
 
@@ -97,19 +101,14 @@ export default class Data {
       null
     );
     if (response.status === 204) {
-      console.log(response);
       return [];
     } else if (response.status === 403) {
-      console.log(response);
-      return response.json().then(data => {
-        return data.errors;
-      });
+      return;
     } else if (response.status === 400) {
       return response.json().then(data => {
         return data.errors;
       });
     } else {
-      console.log(response);
       throw new Error();
     }
   }
