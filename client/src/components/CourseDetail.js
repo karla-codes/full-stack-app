@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
-import NotFound from './NotFound';
 
 /**
  * Renders specified course information
@@ -11,7 +10,7 @@ function CourseDetail(props) {
   const [course, setCourse] = useState('');
   const [courseAuthor, setCourseAuthor] = useState('');
   const [loading, setLoading] = useState(true);
-  const [notFound, setNotFound] = useState(false);
+  // const [notFound, setNotFound] = useState(false);
 
   const { context } = props;
   const authUser = context.authenticatedUser;
@@ -23,8 +22,8 @@ function CourseDetail(props) {
       .then(data => {
         if (data.message) {
           console.log(data.message);
-          setNotFound(true);
           setLoading(false);
+          props.history.push('/notfound');
         } else {
           setLoading(false);
           setCourse(data);
@@ -66,9 +65,9 @@ function CourseDetail(props) {
     );
   }
 
-  function doesCourseExist() {
-    if (notFound) {
-      return <NotFound />;
+  function isLoading() {
+    if (loading) {
+      return null;
     } else {
       return (
         <main>
@@ -98,14 +97,6 @@ function CourseDetail(props) {
           </div>
         </main>
       );
-    }
-  }
-
-  function isLoading() {
-    if (loading) {
-      return null;
-    } else {
-      return doesCourseExist();
     }
   }
 
